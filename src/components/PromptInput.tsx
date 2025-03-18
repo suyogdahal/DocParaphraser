@@ -6,10 +6,6 @@ const PromptInput: React.FC<PromptInputProps> = ({ prompt, setPrompt }) => {
     const storedPrompt = localStorage.getItem("prompt");
     if (storedPrompt) {
       setPrompt(storedPrompt);
-    } else {
-      setPrompt(
-        "Paraphrase the following text in your own words. Make sure to include all the key points and maintain the original meaning. Give your output as a valid overleaf compatible LaTeX."
-      );
     }
   }, [setPrompt]);
 
