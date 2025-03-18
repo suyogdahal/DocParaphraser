@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import DocumentUploader from "./components/DocumentUploader";
-import ApiKeyInput from "./components/ApiKeyInput";
 import OpenAiInput from "./components/OpenAiInput";
 import PromptInput from "./components/PromptInput";
 import DocumentPreview from "./components/DocumentPreview";
 import { DocumentContent } from "./types";
 import { extractLatexContent } from "./utils/responseParser";
+import OpenAI from "openai";
 import "./App.css";
 
 function App() {
@@ -34,39 +34,33 @@ function App() {
     setError(null);
 
     try {
-      // Call to OpenAI API
-      const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
+      // Initialize the OpenAI client with the API key
+      const openai = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true, // Required for browser environments
+      });
+
+      // Call the OpenAI API using the SDK
+      const response = await openai.chat.completions.create({
+        model: model,
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a helpful assistant that paraphrases documents into LaTeX format.",
           },
-          body: JSON.stringify({
-            model: model,
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are a helpful assistant that paraphrases documents into LaTeX format.",
-              },
-              {
-                role: "user",
-                content: `${prompt}\n\nHere is the document content:\n\n${originalContent.content}`,
-              },
-            ],
-            temperature: 0.7,
-          }),
-        }
-      );
+          {
+            role: "user",
+            content: `${prompt}\n\nHere is the document content:\n\n${originalContent.content}`,
+          },
+        ],
+        temperature: 0.7,
+      });
 
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
+      const latexResponse = response.choices[0].message.content;
+      if (!latexResponse) {
+        throw new Error("No response from OpenAI");
       }
-
-      const data = await response.json();
-      const latexResponse = data.choices[0].message.content;
       const parsedLatexContent = extractLatexContent(latexResponse);
       setLatexContent(parsedLatexContent);
 
