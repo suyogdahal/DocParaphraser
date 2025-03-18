@@ -1,9 +1,6 @@
 import React from "react";
 import { DocumentPreviewProps } from "../types";
 
-const latexContentTest =
-  "\\documentclass{article}\\begin{document} \\textbf{Foundations of Computing -- Quiz 6} \\textbf{Question 4 -- Solution:} \\textbf{Step 1: Alphabet Counts} The English alphabet comprises 26 letters in total. \\begin{itemize} \\item Vowels: 5 in total \\item Consonants: The remaining letters, which total to 21. \\end{itemize} \\textbf{Step 2: Compute the Number of Valid Words} \\begin{itemize} \\item First letter (Consonant): We have 21 choices. \\item Third letter (Consonant, different from the first): We have 20 choices (one less than previously). \\item Second letter (Any letter, different from the first and third): We have 24 choices (total 26, excluding the first and third letter). \\end{itemize} Therefore, the total number of valid words is: $21 \\times 20 \\times 24 = 10,080$. \\textbf{Step 3: How Alice and Bob Count the Words} Alice selects in the order: First $\\rightarrow$ Third $\\rightarrow$ Second. The total number of words remains 10,080, since the order of selection does not affect the final count. Bob selects in the order: First $\\rightarrow$ Second $\\rightarrow$ Third. Again, the total count remains 10,080. Therefore, both Alice and Bob enumerate 10,080 words. \\textbf{Final Answer:} Alice and Bob both list 10,080 words. This conclusion is corroborated by the application of the fundamental counting principles. \\end{document}";
-
 const DocumentPreview: React.FC<DocumentPreviewProps> = ({
   originalContent,
   latexContent,

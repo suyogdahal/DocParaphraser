@@ -22,3 +22,10 @@ export interface DocumentPreviewProps {
   latexContent: string | null;
   loading: boolean;
 }
+
+export interface OpenAiInputProps {
+  apiKey: string;
+  setApiKey: (apiKey: string) => void;
+  model: string;
+  setModel: (model: string) => void;
+}

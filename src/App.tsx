@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import DocumentUploader from "./components/DocumentUploader";
 import ApiKeyInput from "./components/ApiKeyInput";
+import OpenAiInput from "./components/OpenAiInput";
 import PromptInput from "./components/PromptInput";
 import DocumentPreview from "./components/DocumentPreview";
 import { DocumentContent } from "./types";
@@ -9,6 +10,7 @@ import "./App.css";
 
 function App() {
   const [apiKey, setApiKey] = useState<string>("");
+  const [model, setModel] = useState<string>("gpt-4o");
   const [prompt, setPrompt] = useState<string>(
     "Paraphrase the following document into academic language, maintaining the structure and formatting. Return the result in LaTeX format."
   );
@@ -42,7 +44,7 @@ function App() {
             Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            model: "gpt-4",
+            model: model,
             messages: [
               {
                 role: "system",
@@ -94,7 +96,12 @@ function App() {
           <DocumentUploader onUpload={handleDocumentUpload} />
 
           <div className="my-4 mt-4">
-            <ApiKeyInput apiKey={apiKey} setApiKey={setApiKey} />
+            <OpenAiInput
+              apiKey={apiKey}
+              setApiKey={setApiKey}
+              model={model}
+              setModel={setModel}
+            />
           </div>
 
           <div className="my-4 mt-4">
